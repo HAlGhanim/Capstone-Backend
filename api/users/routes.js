@@ -6,11 +6,9 @@ const {
   deleteTemp,
   fetchTemp,
   signin,
-} = require("./temp.controllers");
+} = require("./controllers");
 const router = express.Router();
 const passport = require("passport");
-
-// Everything with the word temp is a placeholder that you'll change in accordance with your project
 
 router.param("tempId", async (req, res, next, tempId) => {
   try {
