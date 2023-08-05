@@ -5,28 +5,40 @@ const morgan = require("morgan");
 const app = express();
 const notFound = require("./middlewares/notFoundHandler");
 const errorHandler = require("./middlewares/errorHandler");
-const tempRoutes = require("./api/temp/temp.routes");
 const config = require("./config/keys");
 const passport = require("passport");
 const { localStrategy, jwtStrategy } = require("./middlewares/passport");
+const authRouter = require("./api/Auth/user.route");
+const chatRouter = require("./api/Chat/chat.route");
+// imports needed for socket io
+const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
-app.use(cors());
+// MIDDLEWARES BEFORE
 connectDb();
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
-
 app.use(passport.initialize());
-passport.use("local", localStrategy);
+passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-// Everything with the word temp is a placeholder that you'll change in accordance with your project
-app.use("/temp", tempRoutes);
+// ROUTES
+app.use("/api/auth", authRouter);
+app.use("/api/chat", chatRouter);
 
+// MIDDLEWARES AFTER
 app.use(notFound);
 app.use(errorHandler);
-
-app.listen(config.PORT, () => {
-  console.log(`The application is running on ${config.PORT}`);
+// SOCKETS ON CONNECTION
+io.on("connection", (socket) => {
+  console.log("a user connected");
+});
+// START SERVER
+server.listen(config.PORT, () => {
+  console.log("listening on *:", config.PORT);
 });
 
 module.exports = app;
