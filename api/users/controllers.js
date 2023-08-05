@@ -13,7 +13,7 @@ exports.fetchTemp = async (tempId, next) => {
   }
 };
 
-exports.getTemp = async (req, res, next) => {
+exports.getTemp2 = async (req, res, next) => {
   try {
     const temps = await Temp.find().select("-__v");
     return res.status(200).json(temps);
