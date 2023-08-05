@@ -6,8 +6,8 @@ const generateToken = require("../../utils/auth/generateToken");
 
 exports.fetchTemp = async (tempId, next) => {
   try {
-    const temp1 = await Temp.findById(tempId);
-    return temp1;
+    const temp = await Temp.findById(tempId);
+    return temp;
   } catch (error) {
     return next(error);
   }
