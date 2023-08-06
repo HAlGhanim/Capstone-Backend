@@ -14,7 +14,11 @@ const chatRouter = require("./api/Chat/chat.route");
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
 // MIDDLEWARES BEFORE
 connectDb();
@@ -35,7 +39,15 @@ app.use(errorHandler);
 // SOCKETS ON CONNECTION
 io.on("connection", (socket) => {
   console.log("a user connected");
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+
+  socket.on("chat", (data) => {
+    socket.broadcast.emit("reloadChat", data);
+  });
 });
+
 // START SERVER
 server.listen(config.PORT, () => {
   console.log("listening on *:", config.PORT);

@@ -20,7 +20,8 @@ exports.getChatOrCreate = async (req, res, next) => {
       await foundUser.updateOne({ $push: { chats: createdChat._id } });
       return res.status(201).json(createdChat);
     }
-    return res.status(200).json(foundChat);
+    const chat = await Chat.findById(foundChat._id).populate("msgs");
+    return res.status(200).json(chat);
   } catch (error) {
     next(error);
   }

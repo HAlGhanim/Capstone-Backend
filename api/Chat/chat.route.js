@@ -3,14 +3,14 @@ const passport = require("passport");
 const { getChatOrCreate, sendMsg } = require("./chat.controller");
 const router = express.Router();
 
-router.post(
+router.get(
   "/:userId",
   passport.authenticate("jwt", { session: false }),
   getChatOrCreate
 );
 
 router.post(
-  "/:chatId",
+  "/send/:chatId",
   passport.authenticate("jwt", { session: false }),
   sendMsg
 );
