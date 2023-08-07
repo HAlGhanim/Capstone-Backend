@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const app = express();
 
 const notFoundHandler = require("./middlewares/errors/notFoundHandler");
-const errorHandler = require("./middlewares//errors/errorHandler");
+const errorHandler = require("./middlewares/errors/errorHandler");
 const config = require("./config/keys");
 const passport = require("passport");
 const {
