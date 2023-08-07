@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const app = express();
 
 const notFoundHandler = require("./middlewares/errors/notFoundHandler");
-const errorHandler = require("./middlewares//errors/errorHandler");
+const errorHandler = require("./middlewares/errors/errorHandler");
 const config = require("./config/keys");
 const passport = require("passport");
 const {
@@ -35,8 +35,8 @@ app.use(passport.initialize());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use("/events", eventRoutes);
-app.use("/tags", tagRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/tags", tagRoutes);
 app.use("/api/auth", authRouter);
 app.use("/api/chat", chatRouter);
 
