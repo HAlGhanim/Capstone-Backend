@@ -35,8 +35,8 @@ app.use(passport.initialize());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use("/events", eventRoutes);
-app.use("/tags", tagRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/tags", tagRoutes);
 app.use("/api/auth", authRouter);
 app.use("/api/chat", chatRouter);
 
