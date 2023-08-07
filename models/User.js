@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   interests: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   createdEvents: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   attendedEvents: [{ type: Schema.Types.ObjectId, ref: "Event" }],
-  chat: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
+  chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
 });
 
 module.exports = model("User", UserSchema);
