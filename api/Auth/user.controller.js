@@ -9,8 +9,8 @@ exports.createUser = async (req, res, next) => {
     // }
     // if (!req.body.image)
     //   return next({ status: 400, message: "no image was uploaded!" });
-    const { password } = req.body;
-    req.body.password = await passhash(password);
+    // const { password } = req.body;
+    // req.body.password = await passhash(password);
     const newUser = await User.create(req.body);
     const token = generateToken(newUser);
     res.status(201).json({ token });
