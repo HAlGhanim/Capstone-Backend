@@ -1,7 +1,9 @@
 const express = require("express");
 const passport = require("passport");
-const { getChatOrCreate, sendMsg } = require("./chat.controller");
+const { getChatOrCreate, sendMsg, getMyChats } = require("./chat.controller");
 const router = express.Router();
+
+router.get("/", passport.authenticate("jwt", { session: false }), getMyChats);
 
 router.get(
   "/:userId",

@@ -45,3 +45,18 @@ exports.sendMsg = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getMyChats = async (req, res, next) => {
+  try {
+    const chats = await User.findById(req.user._id)
+      .select("chats -_id")
+      .populate({
+        path: "chats",
+        populate: "members",
+        select: "username _id image",
+      });
+    return res.status(200).json(chats.chats);
+  } catch (error) {
+    next(error);
+  }
+};
