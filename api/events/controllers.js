@@ -1,9 +1,10 @@
 const Event = require("../../models/Event");
 
-exports.fetchEvent = async (eventId, next) => {
+exports.getEventById = async (req, res, next) => {
   try {
+    const { eventId } = req.params;
     const event = await Event.findById(eventId);
-    return event;
+    return res.status(200).json(event);
   } catch (error) {
     return next(error);
   }

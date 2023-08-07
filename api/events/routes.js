@@ -3,7 +3,7 @@ const {
   getEvents,
   createEvent,
   deleteEvent,
-  fetchEvent,
+  getEventById,
 } = require("./controllers");
 const router = express.Router();
 const passport = require("passport");
@@ -12,7 +12,7 @@ const { imageConditional } = require("../../middlewares/images/pImage");
 
 router.param("eventId", async (req, res, next, eventId) => {
   try {
-    const foundEvent = await fetchEvent(eventId);
+    const foundEvent = await Event.findById(eventId);
     if (!foundEvent) return next({ status: 404, message: "Event not found" });
     req.event = foundEvent;
     next();
@@ -29,6 +29,7 @@ router.post(
   imageConditional,
   createEvent
 );
+router.get("/:eventId", getEventById);
 router.delete(
   "/:eventId",
   passport.authenticate("jwt", { session: false }),
