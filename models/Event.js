@@ -2,7 +2,10 @@ const { model, Schema } = require("mongoose");
 
 const EventSchema = new Schema({
   name: { type: String, unique: true, required: true },
-  location: { longtitude: String, latitude: String, required: true },
+  location: {
+    longtitude: { type: String, required: true },
+    latitude: { type: String, required: true },
+  },
   date: { type: Date, required: true },
   description: { type: String, required: true },
   image: { type: String, required: true },

@@ -2,17 +2,6 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const JWTStrategy = require("passport-jwt").Strategy;
 const { fromAuthHeaderAsBearerToken } = require("passport-jwt").ExtractJwt;
-<<<<<<< HEAD:middlewares/passport.js
-const config = require("../config/keys");
-
-const User = require("../models/User");
-
-exports.localStrategy = new LocalStrategy(async (username, password, done) => {
-  try {
-    const user = await User.findOne({ username: username });
-    if (!user) {
-      return done(null, false);
-=======
 const config = require("../../config/keys");
 const User = require("../../models/User");
 
@@ -33,17 +22,9 @@ exports.localStrategy = new LocalStrategy(
       return done(null, user);
     } catch (error) {
       return done(error);
->>>>>>> main:middlewares/passport/passport.js
     }
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      return done(null, false);
-    }
-    return done(null, user);
-  } catch (error) {
-    return done(error);
   }
-});
+);
 
 exports.jwtStrategy = new JWTStrategy(
   {

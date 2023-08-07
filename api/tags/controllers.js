@@ -1,60 +1,35 @@
-const Temp = require("../../models/Temp");
-const passHash = require("../../utils/auth/passhash");
-const generateToken = require("../../utils/auth/generateToken");
+const Tag = require("../../models/Tag");
 
-// Everything with the word temp is a placeholder that you'll change in accordance with your project
-
-exports.fetchTemp = async (tempId, next) => {
+exports.fetchTag = async (tagId, next) => {
   try {
-    const temp1 = await Temp.findById(tempId);
-    return temp1;
+    const tag = await Tag.findById(tagId);
+    return tag;
   } catch (error) {
     return next(error);
   }
 };
 
-exports.getTemp = async (req, res, next) => {
+exports.getTags = async (req, res, next) => {
   try {
-    const temps = await Temp.find().select("-__v");
-    return res.status(200).json(temps);
+    const tags = await Tag.find().select("-__v");
+    return res.status(200).json(tags);
   } catch (error) {
     return next(error);
   }
 };
 
-exports.createTemp = async (req, res, next) => {
+exports.createTag = async (req, res, next) => {
   try {
-    const { password } = req.body;
-    req.body.password = await passHash(password);
-    const newTemp = await Temp.create(req.body);
-    const token = generateToken(newTemp);
-    res.status(201).json({ token });
+    const newTag = await Tag.create(req.body);
+    res.status(201).json(newTag);
   } catch (err) {
     return res.status(500).json(err.message);
   }
 };
 
-exports.signin = async (req, res) => {
+exports.deleteTag = async (req, res, next) => {
   try {
-    const token = generateToken(req.user);
-    return res.status(200).json({ token });
-  } catch (err) {
-    return res.status(500).json(err.message);
-  }
-};
-
-exports.updateTemp = async (req, res, next) => {
-  try {
-    await Temp.findByIdAndUpdate(req.temp.id, req.body);
-    return res.status(204).end();
-  } catch (error) {
-    return next(error);
-  }
-};
-
-exports.deleteTemp = async (req, res, next) => {
-  try {
-    await Temp.findByIdAndRemove({ _id: req.temp.id });
+    await Tag.findByIdAndRemove({ _id: req.tag.id });
     return res.status(204).end();
   } catch (error) {
     return next(error);

@@ -4,11 +4,14 @@ const cors = require("cors");
 const morgan = require("morgan");
 const app = express();
 
-const notFound = require("./middlewares/notFoundHandler");
-const errorHandler = require("./middlewares/errorHandler");
+const notFoundHandler = require("./middlewares/errors/notFoundHandler");
+const errorHandler = require("./middlewares//errors/errorHandler");
 const config = require("./config/keys");
 const passport = require("passport");
-const { localStrategy, jwtStrategy } = require("./middlewares/passport");
+const {
+  localStrategy,
+  jwtStrategy,
+} = require("./middlewares/passport/passport");
 const authRouter = require("./api/Auth/user.route");
 const chatRouter = require("./api/Chat/chat.route");
 const eventRoutes = require("./api/events/routes");
@@ -34,12 +37,11 @@ passport.use(jwtStrategy);
 
 app.use("/events", eventRoutes);
 app.use("/tags", tagRoutes);
-app.use("/chats", chatRoutes);
 app.use("/api/auth", authRouter);
 app.use("/api/chat", chatRouter);
 
 // MIDDLEWARES AFTER
-app.use(notFound);
+app.use(notFoundHandler);
 app.use(errorHandler);
 // SOCKETS ON CONNECTION
 io.on("connection", (socket) => {

@@ -1,34 +1,21 @@
 const express = require("express");
-const {
-  getTemp,
-  createTemp,
-  updateTemp,
-  deleteTemp,
-  fetchTemp,
-  signin,
-} = require("./controllers");
+const { getTags, createTag, deleteTag, fetchTag } = require("./controllers");
 const router = express.Router();
 const passport = require("passport");
 
-router.param("tempId", async (req, res, next, tempId) => {
+router.param("tagId", async (req, res, next, tagId) => {
   try {
-    const foundTemp = await fetchTemp(tempId);
-    if (!foundTemp) return next({ status: 404, message: "Temp not found" });
-    req.temp = foundTemp;
+    const foundTag = await fetchTag(tagId);
+    if (!foundTag) return next({ status: 404, message: "Tag not found" });
+    req.tag = foundTag;
     next();
   } catch (error) {
     return next(error);
   }
 });
 
-router.get("/", passport.authenticate("jwt", { session: false }), getTemp);
-router.post("/createTemp", createTemp);
-router.post(
-  "/signin",
-  passport.authenticate("local", { session: false }),
-  signin
-);
-router.put("/:tempId", updateTemp);
-router.delete("/:tempId", deleteTemp);
+router.get("/", getTags);
+router.post("/createTag", createTag);
+router.delete("/:tagId", deleteTag);
 
 module.exports = router;

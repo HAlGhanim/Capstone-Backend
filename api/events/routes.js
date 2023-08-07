@@ -1,34 +1,38 @@
 const express = require("express");
 const {
-  getTemp,
-  createTemp,
-  updateTemp,
-  deleteTemp,
-  fetchTemp,
-  signin,
+  getEvents,
+  createEvent,
+  deleteEvent,
+  fetchEvent,
 } = require("./controllers");
 const router = express.Router();
 const passport = require("passport");
+const upload = require("../../middlewares/images/multer");
+const { imageConditional } = require("../../middlewares/images/pImage");
 
-router.param("tempId", async (req, res, next, tempId) => {
+router.param("eventId", async (req, res, next, eventId) => {
   try {
-    const foundTemp = await fetchTemp(tempId);
-    if (!foundTemp) return next({ status: 404, message: "Temp not found" });
-    req.temp = foundTemp;
+    const foundEvent = await fetchEvent(eventId);
+    if (!foundEvent) return next({ status: 404, message: "Event not found" });
+    req.event = foundEvent;
     next();
   } catch (error) {
     return next(error);
   }
 });
 
-router.get("/", passport.authenticate("jwt", { session: false }), getTemp);
-router.post("/createTemp", createTemp);
+router.get("/", getEvents);
 router.post(
-  "/signin",
-  passport.authenticate("local", { session: false }),
-  signin
+  "/createEvent",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  imageConditional,
+  createEvent
 );
-router.put("/:tempId", updateTemp);
-router.delete("/:tempId", deleteTemp);
+router.delete(
+  "/:eventId",
+  passport.authenticate("jwt", { session: false }),
+  deleteEvent
+);
 
 module.exports = router;
