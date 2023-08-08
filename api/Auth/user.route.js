@@ -1,6 +1,11 @@
 const express = require("express");
 const passport = require("passport");
-const { createUser, getUsers, signin } = require("./user.controller");
+const {
+  createUser,
+  getUsers,
+  signin,
+  getUserProfile,
+} = require("./user.controller");
 const upload = require("../../middlewares/images/multer");
 const { hashing } = require("../../middlewares/password/password");
 const { imageConditional } = require("../../middlewares/images/pImage");
@@ -20,5 +25,11 @@ router.post(
   "/login",
   passport.authenticate("local", { session: false }),
   signin
+);
+
+router.get(
+  "/my-profile",
+  passport.authenticate("jwt", { session: false }),
+  getUserProfile
 );
 module.exports = router;
