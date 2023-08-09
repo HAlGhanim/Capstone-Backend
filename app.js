@@ -20,6 +20,7 @@ const tagRoutes = require("./api/tags/routes");
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const path = require("path");
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -35,6 +36,7 @@ app.use(passport.initialize());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
+app.use("/media", express.static(path.join(__dirname, "media")));
 app.use("/api/events", eventRoutes);
 app.use("/api/tags", tagRoutes);
 app.use("/api/auth", authRouter);
