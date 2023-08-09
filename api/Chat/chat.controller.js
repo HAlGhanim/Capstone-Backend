@@ -52,7 +52,7 @@ exports.getMyChats = async (req, res, next) => {
       .select("chats -_id")
       .populate({
         path: "chats",
-        populate: "members",
+        populate: "members msgs",
         select: "username _id image",
       });
     return res.status(200).json(chats.chats);
