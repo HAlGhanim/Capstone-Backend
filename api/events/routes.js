@@ -9,6 +9,7 @@ const router = express.Router();
 const passport = require("passport");
 const upload = require("../../middlewares/images/multer");
 const { imageConditional } = require("../../middlewares/images/pImage");
+const Event = require("../../models/Event");
 
 router.param("eventId", async (req, res, next, eventId) => {
   try {
