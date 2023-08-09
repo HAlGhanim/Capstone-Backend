@@ -4,6 +4,7 @@ const {
   createEvent,
   deleteEvent,
   getEventById,
+  suggestedEvent,
 } = require("./controllers");
 const router = express.Router();
 const passport = require("passport");
@@ -22,6 +23,11 @@ router.param("eventId", async (req, res, next, eventId) => {
   }
 });
 
+router.get(
+  "/suggested",
+  passport.authenticate("jwt", { session: false }),
+  suggestedEvent
+);
 router.get("/", getEvents);
 router.post(
   "/createEvent",
@@ -30,6 +36,7 @@ router.post(
   imageConditional,
   createEvent
 );
+// router.get("/", get
 router.get("/:eventId", getEventById);
 router.delete(
   "/:eventId",
