@@ -1,3 +1,4 @@
+const Tag = require("../../models/Tag");
 const User = require("../../models/User");
 const generateToken = require("../../utils/auth/generateToken");
 const passhash = require("../../utils/auth/passhash");
@@ -11,7 +12,21 @@ exports.createUser = async (req, res, next) => {
     //   return next({ status: 400, message: "no image was uploaded!" });
     // const { password } = req.body;
     // req.body.password = await passhash(password);
+    //tags sends from the front end as an array of ids
+
     const newUser = await User.create(req.body);
+
+    const tags = req.body.interests;
+
+    await Tag.updateMany(
+      { _id: tags },
+      {
+        $push: {
+          interestedUsers: newUser._id,
+        },
+      }
+    );
+
     const token = generateToken(newUser);
     res.status(201).json({ token });
   } catch (error) {
@@ -39,13 +54,14 @@ exports.getUsers = async (req, res, next) => {
 
 exports.getUserProfile = async (req, res, next) => {
   try {
+    // console.log(req);
     const user = req.user;
-
+    const profile = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ message: "User profile not found" });
     }
 
-    return res.status(200).json(user);
+    return res.status(200).json(profile);
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
   }
