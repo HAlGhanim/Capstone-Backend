@@ -22,6 +22,7 @@ exports.getEvents = async (req, res, next) => {
 exports.createEvent = async (req, res, next) => {
   try {
     req.body.organizer = req.user;
+    req.body.date = new Date(req.body.date);
     const newEvent = await Event.create(req.body);
     res.status(201).json(newEvent);
   } catch (err) {
