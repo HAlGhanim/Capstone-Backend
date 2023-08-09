@@ -39,21 +39,13 @@ exports.getUsers = async (req, res, next) => {
 
 exports.getUserProfile = async (req, res, next) => {
   try {
-    const userId = req.user._id;
+    const user = req.user;
 
-    // Find the user profile based on the user ID
-    const userProfile = await User.findById(userId)
-      .populate("interests") // Populate interests field with referenced Tag documents
-      .populate("createdEvents") // Populate createdEvents field with referenced Event documents
-      .populate("attendedEvents") // Populate attendedEvents field with referenced Event documents
-      .populate("chats"); // Populate chats field with referenced Chat documents
-
-    if (!userProfile) {
+    if (!user) {
       return res.status(404).json({ message: "User profile not found" });
     }
 
-    // Return the user profile
-    res.status(200).json(userProfile);
+    return res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
   }
