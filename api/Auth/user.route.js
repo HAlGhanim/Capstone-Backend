@@ -5,6 +5,7 @@ const {
   getUsers,
   signin,
   getUserProfile,
+  checkUsername,
 } = require("./user.controller");
 const upload = require("../../middlewares/images/multer");
 const { hashing } = require("../../middlewares/password/password");
@@ -32,4 +33,6 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   getUserProfile
 );
+
+router.post("/checkusername", checkUsername);
 module.exports = router;

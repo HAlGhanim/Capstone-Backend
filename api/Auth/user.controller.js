@@ -66,3 +66,16 @@ exports.getUserProfile = async (req, res, next) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+exports.checkUsername = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    if (!user) {
+      return res.status(200).json({ message: "available" });
+    } else {
+      return res.status(200).json({ message: "unavailable" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
