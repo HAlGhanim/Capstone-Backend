@@ -16,6 +16,12 @@ exports.createUser = async (req, res, next) => {
 
     const newUser = await User.create(req.body);
 
+    // Store the Expo push token if provided
+    if (req.body.expoPushToken) {
+      newUser.expoPushToken = req.body.expoPushToken;
+      await newUser.save();
+    }
+
     const tags = req.body.interests;
 
     await Tag.updateMany(
@@ -34,8 +40,14 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
-exports.signin = async (req, res) => {
+exports.signin = async (req, res, next) => {
   try {
+    // Update the Expo push token if provided
+    if (req.body.expoPushToken) {
+      req.user.expoPushToken = req.body.expoPushToken;
+      await req.user.save();
+    }
+
     const token = generateToken(req.user);
     return res.status(200).json({ token });
   } catch (error) {
