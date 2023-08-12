@@ -10,6 +10,7 @@ const UserSchema = new Schema({
   createdEvents: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   attendedEvents: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
+  expoPushToken: [{ type: String }],
 });
 
 module.exports = model("User", UserSchema);
