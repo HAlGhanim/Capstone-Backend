@@ -12,6 +12,7 @@ exports.fetchTag = async (tagId, next) => {
 exports.getTags = async (req, res, next) => {
   try {
     const tags = await Tag.find().select("-__v");
+    console.log(tags);
     return res.status(200).json(tags);
   } catch (error) {
     return next(error);
