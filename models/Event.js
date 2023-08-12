@@ -1,11 +1,20 @@
 const { model, Schema } = require("mongoose");
 
+const PointSchema = new Schema({
+  type: {
+    type: String,
+    enum: ["Point"],
+    required: true,
+  },
+  coordinates: {
+    type: [Number],
+    required: true,
+  },
+});
+
 const EventSchema = new Schema({
   name: { type: String, unique: true, required: true },
-  location: {
-    longitude: { type: String, required: true },
-    latitude: { type: String, required: true },
-  },
+  location: { type: PointSchema, index: "2dsphere" },
   date: { type: Date, required: true },
   description: { type: String, required: true },
   image: { type: String, required: true },
