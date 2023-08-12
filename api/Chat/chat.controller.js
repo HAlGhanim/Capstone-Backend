@@ -56,7 +56,7 @@ exports.sendMsg = async (req, res, next) => {
       to: user.expoPushToken,
       sound: "default",
       body: `New message from ${req.user.username}: ${req.body.msg}`,
-      data: { chatId: foundChat._id, user: otherUserIds.toString() },
+      data: { chatId: foundChat._id, user: req.user },
     }));
 
     const chunks = expo.chunkPushNotifications(messages);
