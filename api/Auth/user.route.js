@@ -6,6 +6,7 @@ const {
   signin,
   getUserProfile,
   checkUsername,
+  checkEmail,
 } = require("./user.controller");
 const upload = require("../../middlewares/images/multer");
 const { hashing } = require("../../middlewares/password/password");
@@ -35,4 +36,5 @@ router.get(
 );
 
 router.post("/checkusername", checkUsername);
+router.post("/checkemail", checkEmail);
 module.exports = router;
