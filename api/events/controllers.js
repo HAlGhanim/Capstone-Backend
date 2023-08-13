@@ -25,8 +25,13 @@ exports.getEvents = async (req, res, next) => {
 exports.createEvent = async (req, res, next) => {
   try {
     req.body.organizer = req.user._id;
+    const { latitude, longitude } = req.body;
     console.log(req.body);
     // req.body.date = new Date(req.body.date);
+    req.body.location = {
+      type: "Point",
+      coordinates: [longitude, latitude],
+    };
     const newEvent = await Event.create(req.body);
     await req.user.updateOne({ $push: { createdEvents: newEvent._id } });
     res.status(201).json(newEvent);

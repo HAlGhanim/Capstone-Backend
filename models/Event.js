@@ -1,20 +1,19 @@
 const { model, Schema } = require("mongoose");
 
-const PointSchema = new Schema({
-  type: {
-    type: String,
-    enum: ["Point"],
-    required: true,
-  },
-  coordinates: {
-    type: [Number],
-    required: true,
-  },
-});
-
 const EventSchema = new Schema({
   name: { type: String, unique: true, required: true },
-  location: { type: PointSchema, index: "2dsphere" },
+  location: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      default: "Point",
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+      default: [0, 0],
+    },
+  },
   date: { type: Date, required: true },
   description: { type: String, required: true },
   image: { type: String, required: true },
@@ -25,5 +24,7 @@ const EventSchema = new Schema({
   attendees: [{ type: Schema.Types.ObjectId, ref: "User" }],
   organizer: { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
+
+EventSchema.index({ location: "2dsphere" });
 
 module.exports = model("Event", EventSchema);
