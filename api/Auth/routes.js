@@ -7,7 +7,7 @@ const {
   getUserProfile,
   checkUsername,
   checkEmail,
-} = require("./user.controller");
+} = require("./controllers");
 const upload = require("../../middlewares/images/multer");
 const { hashing } = require("../../middlewares/password/password");
 const { imageConditional } = require("../../middlewares/images/pImage");

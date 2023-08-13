@@ -12,8 +12,8 @@ const {
   localStrategy,
   jwtStrategy,
 } = require("./middlewares/passport/passport");
-const authRouter = require("./api/Auth/user.route");
-const chatRouter = require("./api/Chat/chat.route");
+const authRouter = require("./api/Auth/routes");
+const chatRouter = require("./api/Chat/routes");
 const eventRoutes = require("./api/events/routes");
 const tagRoutes = require("./api/tags/routes");
 // imports needed for socket io
