@@ -13,10 +13,16 @@ exports.createUser = async (req, res, next) => {
     // const { password } = req.body;
     // req.body.password = await passhash(password);
     //tags sends from the front end as an array of ids
-    const tags = req.body.interests;
-    console.log(req.body);
 
     const newUser = await User.create(req.body);
+
+    // Store the Expo push token if provided
+    if (req.body.expoPushToken) {
+      newUser.expoPushToken = req.body.expoPushToken;
+      await newUser.save();
+    }
+
+    const tags = req.body.interests;
 
     await Tag.updateMany(
       { _id: tags },
@@ -34,9 +40,14 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
-exports.signin = async (req, res) => {
+exports.signin = async (req, res, next) => {
   try {
-    console.log(req.body);
+    // Update the Expo push token if provided
+    if (req.body.expoPushToken) {
+      req.user.expoPushToken = req.body.expoPushToken;
+      await req.user.save();
+    }
+
     const token = generateToken(req.user);
     return res.status(200).json({ token });
   } catch (error) {
