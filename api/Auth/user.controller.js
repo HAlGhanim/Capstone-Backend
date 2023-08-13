@@ -78,3 +78,36 @@ exports.getUserProfile = async (req, res, next) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+exports.checkUsername = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const user = await User.findOne({ username: req.body.username });
+    console.log(user);
+    if (user == null) {
+      return res
+        .status(200)
+        .json({ message: "available", username: req.body.username });
+    }
+    return res
+      .status(200)
+      .json({ message: "exist", username: req.body.username });
+  } catch (error) {
+    next(error);
+  }
+};
+exports.checkEmail = async (req, res, next) => {
+  try {
+    const email = await User.findOne({ email: req.body.email });
+    if (email == null) {
+      return res
+        .status(200)
+        .json({ message: "available", email: req.body.email });
+    }
+    return res
+      .status(200)
+      .json({ message: "exist", email: req.body.useemailrname });
+  } catch (error) {
+    next(error);
+  }
+};
