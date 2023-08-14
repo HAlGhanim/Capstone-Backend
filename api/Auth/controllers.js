@@ -5,7 +5,7 @@ const generateToken = require("../../utils/auth/generateToken");
 exports.createUser = async (req, res, next) => {
   try {
     //tags sends from the front end as an array of ids
-
+    console.log(req.body);
     const newUser = await User.create(req.body);
 
     // Store the Expo push token if provided
