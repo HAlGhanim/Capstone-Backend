@@ -1,17 +1,9 @@
 const Tag = require("../../models/Tag");
 const User = require("../../models/User");
 const generateToken = require("../../utils/auth/generateToken");
-const passhash = require("../../utils/auth/passhash");
 
 exports.createUser = async (req, res, next) => {
   try {
-    // if (req.file) {
-    //   req.body.image = `${req.file.path.replace("\\", "/")}`;
-    // }
-    // if (!req.body.image)
-    //   return next({ status: 400, message: "no image was uploaded!" });
-    // const { password } = req.body;
-    // req.body.password = await passhash(password);
     //tags sends from the front end as an array of ids
 
     const newUser = await User.create(req.body);

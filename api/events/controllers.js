@@ -1,5 +1,7 @@
 const Event = require("../../models/Event");
+const Tag = require("../../models/Tag");
 const AI = require("../../openai");
+
 exports.getEventById = async (req, res, next) => {
   try {
     const { eventId } = req.params;
@@ -25,14 +27,23 @@ exports.getEvents = async (req, res, next) => {
 exports.createEvent = async (req, res, next) => {
   try {
     req.body.organizer = req.user._id;
+    const tags = req.body.tags;
     const { latitude, longitude } = req.body;
+    const newEvent = await Event.create(req.body);
     console.log(req.body);
     // req.body.date = new Date(req.body.date);
     req.body.location = {
       type: "Point",
       coordinates: [longitude, latitude],
     };
-    const newEvent = await Event.create(req.body);
+    await Tag.updateMany(
+      { _id: tags },
+      {
+        $push: {
+          events: newEvent._id,
+        },
+      }
+    );
     await req.user.updateOne({ $push: { createdEvents: newEvent._id } });
     res.status(201).json(newEvent);
   } catch (err) {
@@ -54,6 +65,34 @@ exports.deleteEvent = async (req, res, next) => {
         .json({ message: " you're not the creater of this event" });
     }
     return res.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.rsvp = async (req, res, next) => {
+  try {
+    const { eventId } = req.params;
+    const event = await Event.findByIdAndUpdate(eventId, {
+      attendees: req.user,
+    });
+    return res.status(204).json(event);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.removeRSVP = async (req, res, next) => {
+  try {
+    const { eventId } = req.params;
+    const event = await Event.findById(eventId);
+
+    event.attendees = event.attendees.filter(
+      (attendee) => attendee.toString() !== req.user._id.toString()
+    );
+    await event.save();
+
+    return res.status(204).json({ message: "RSVP removed successfully" });
   } catch (error) {
     return next(error);
   }
@@ -95,4 +134,3 @@ exports.suggestedEvent = async (req, res, next) => {
     return next(error);
   }
 };
-//ALi123!@#

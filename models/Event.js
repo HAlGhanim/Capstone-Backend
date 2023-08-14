@@ -20,7 +20,7 @@ const EventSchema = new Schema({
   from: { type: Date, required: true },
   to: { type: Date, required: true },
   price: { type: Number, required: true },
-  tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
+  tags: [{ type: Schema.Types.ObjectId, ref: "Tag", required: true }],
   attendees: [{ type: Schema.Types.ObjectId, ref: "User" }],
   organizer: { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
