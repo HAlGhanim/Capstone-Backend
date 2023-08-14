@@ -60,7 +60,7 @@ exports.getUserProfile = async (req, res, next) => {
   try {
     // console.log(req);
     const user = req.user;
-    const profile = await User.findById(req.user._id);
+    const profile = await User.findById(req.user._id).populate("createdEvents");
     if (!user) {
       return res.status(404).json({ message: "User profile not found" });
     }
