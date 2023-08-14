@@ -13,7 +13,7 @@ exports.localStrategy = new LocalStrategy(
     try {
       const user = await User.findOne({ email: email.toLowerCase() });
       if (!user) {
-        return done({ message: "Invalid credentials" }, false);
+        return done({ message: "Email isn't registered" }, false);
       }
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
