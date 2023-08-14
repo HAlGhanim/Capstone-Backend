@@ -26,16 +26,19 @@ exports.getEvents = async (req, res, next) => {
 
 exports.createEvent = async (req, res, next) => {
   try {
+    console.log(req.body);
     req.body.organizer = req.user._id;
     const tags = req.body.tags;
     const { latitude, longitude } = req.body;
-    const newEvent = await Event.create(req.body);
-    console.log(req.body);
-    // req.body.date = new Date(req.body.date);
+
     req.body.location = {
       type: "Point",
       coordinates: [longitude, latitude],
     };
+    console.log("BEFORE CREATE", req.body);
+    const newEvent = await Event.create(req.body);
+    // req.body.date = new Date(req.body.date);
+
     await Tag.updateMany(
       { _id: tags },
       {
