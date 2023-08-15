@@ -5,10 +5,9 @@ const AI = require("../../openai");
 exports.getEventById = async (req, res, next) => {
   try {
     const { eventId } = req.params;
-    const event = await Event.findById(eventId).populate(
-      "organizer",
-      "username"
-    );
+    const event = await Event.findById(eventId)
+      .populate("organizer", "username")
+      .populate("attendees", "_id username");
     return res.status(200).json(event);
   } catch (error) {
     return next(error);
@@ -17,7 +16,9 @@ exports.getEventById = async (req, res, next) => {
 
 exports.getEvents = async (req, res, next) => {
   try {
-    const events = await Event.find().populate("organizer", "username image");
+    const events = await Event.find()
+      .populate("organizer", "username image")
+      .populate("attendees", "username");
     return res.status(200).json(events);
   } catch (error) {
     return next(error);
