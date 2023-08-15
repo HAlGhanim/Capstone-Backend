@@ -129,6 +129,7 @@ exports.suggestedEvent = async (req, res, next) => {
     const suggestionEvents = await Event.find({
       _id: suggestion.events,
     }).populate("organizer", "username image");
+    console.log(suggestionEvents);
     return res.status(200).json(suggestionEvents);
   } catch (error) {
     return next(error);

@@ -2,6 +2,15 @@ const Tag = require("../../models/Tag");
 const User = require("../../models/User");
 const generateToken = require("../../utils/auth/generateToken");
 
+exports.fetchUser = async (userId, next) => {
+  try {
+    const user = await User.findById(userId);
+    return user;
+  } catch (error) {
+    return next({ status: 400, message: error.message });
+  }
+};
+
 exports.createUser = async (req, res, next) => {
   try {
     //tags sends from the front end as an array of ids
@@ -99,6 +108,20 @@ exports.checkEmail = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: "exist", email: req.body.useemailrname });
+  } catch (error) {
+    next(error);
+  }
+};
+exports.updateProfile = async (req, res, next) => {
+  try {
+    if (!req.user._id.equals(req.foundUser._id)) {
+      return next({
+        status: 400,
+        message: "You don't have permission to perform this task!",
+      });
+    }
+    await User.findByIdAndUpdate(req.user._id, { $set: req.body });
+    return res.status(204).end();
   } catch (error) {
     next(error);
   }
