@@ -105,12 +105,15 @@ exports.removeRSVP = async (req, res, next) => {
 
 exports.suggestedEvent = async (req, res, next) => {
   try {
+    console.log("Hello 1");
     const user = await req.user.populate({
       //pouplate interest and show name only
       path: "interests",
       select: "name",
     });
     // console.log("heree", user);
+    console.log("Hello 2");
+
     const events = await Event.find({
       date: {
         //gt greater then
@@ -119,6 +122,7 @@ exports.suggestedEvent = async (req, res, next) => {
     })
       .select("_id name tags date description")
       .populate("tags", "name -_id");
+    console.log("Hello 3");
 
     const userInterests = { interests: user.interests.map((i) => i.name) };
     const eventsAI = events.map((event) => ({
@@ -129,8 +133,13 @@ exports.suggestedEvent = async (req, res, next) => {
 
       tags: event.tags.map((tag) => tag.name),
     }));
+    console.log("Hello 4");
+
     // console.log(eventsAI, userInterests);
     const suggestion = await AI(userInterests, eventsAI);
+    console.log("Hello 5");
+
+    console.log(suggestion);
     const suggestionEvents = await Event.find({
       _id: suggestion.events,
     }).populate("organizer", "username image");
