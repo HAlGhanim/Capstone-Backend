@@ -79,8 +79,9 @@ exports.rsvp = async (req, res, next) => {
   try {
     const { eventId } = req.params;
     const event = await Event.findByIdAndUpdate(eventId, {
-      attendees: req.user,
-    });
+        $addToSet: { attendees: req.user._id }, // Add the new attendee to the attendees array
+      },
+      { new: true });
     return res.status(204).json(event);
   } catch (error) {
     return next(error);
