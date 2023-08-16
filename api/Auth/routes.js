@@ -49,8 +49,9 @@ router.get(
 router.post("/checkusername", checkUsername);
 router.post("/checkemail", checkEmail);
 router.put(
-  "/:userId",
+  "/edit/:userId",
   upload.single("image"),
+  imageConditional,
   passport.authenticate("jwt", { session: false }),
   updateProfile
 );
