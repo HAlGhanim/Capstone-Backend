@@ -7,7 +7,7 @@ exports.getEventById = async (req, res, next) => {
     const { eventId } = req.params;
     const event = await Event.findById(eventId)
       .populate("organizer", "username")
-      .populate("attendees", "_id username")
+      .populate("attendees", "_id username image")
       .populate("tags", "name");
     return res.status(200).json(event);
   } catch (error) {

@@ -71,7 +71,8 @@ exports.getUserProfile = async (req, res, next) => {
     const user = req.user;
     const profile = await User.findById(req.user._id)
       .populate("createdEvents")
-      .populate("interests", "name");
+      .populate("interests", "name")
+      .populate("attendedEvents");
     if (!user) {
       return res.status(404).json({ message: "User profile not found" });
     }
